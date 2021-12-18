@@ -119,17 +119,21 @@
 
 
 (defn run-find [command-info command]
-  (let [command-body (get command :command-body)
-        coll (get command-info :coll)
-        session (get command-info :session)
-        result-class (get command-info :result-class)
-        findIterable (if (some? session)
-                       (.find ^MongoCollection coll ^ClientSession session ^Class result-class) ;;(c-schema (.runCommand db ^ClientSession session ^Document mql-doc))
-                       (.find ^MongoCollection coll ^Class result-class))
-        options command-body
-        _ (add-options findIterable options)
-        ]
-    findIterable))
+  (if (get-in command [:command-body "command"])
+    (let [command-head (ordered-map (get command :command-head))
+          command-body (dissoc (get command :command-body) "command")]
+      (merge command-head command-body))
+    (let [command-body (get command :command-body)
+          coll (get command-info :coll)
+          session (get command-info :session)
+          result-class (get command-info :result-class)
+          findIterable (if (some? session)
+                         (.find ^MongoCollection coll ^ClientSession session ^Class result-class) ;;(c-schema (.runCommand db ^ClientSession session ^Document mql-doc))
+                         (.find ^MongoCollection coll ^Class result-class))
+          options command-body
+          _ (add-options findIterable options)
+          ]
+      findIterable)))
 
 
 ;;--------------------------------------Method or Command(depends on arguments)-----------------------------------------
