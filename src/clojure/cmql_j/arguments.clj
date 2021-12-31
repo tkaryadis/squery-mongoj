@@ -1,7 +1,7 @@
 (ns cmql-j.arguments
   (:require cmql-core.operators.operators
             [cmql-core.internal.convert.stages :refer [cmql-vector->cmql-map]]
-            [cmql-j.internal.convert.arguments :refer [jp-f]]
+            [cmql-j.internal.convert.arguments :refer [jp-f u-f]]
             [cmql-j.internal.convert.options :refer [convert-options]]
             [cmql-j.driver.document :refer [clj->j-doc]])
   (:import (org.bson Document BSON)
@@ -15,17 +15,24 @@
   {:__pipeline__ `(apply jp-f (let ~cmql-core.operators.operators/operators-mappings
                                 ~(into [] stages)))})
 
-(defmacro ^ArrayList p
-  "Convert a cMQL pipeline to a Java MQL pipeline"
+(defmacro  p
+  "Convert a cMQL pipeline to a Java MQL pipeline(Arraylist)"
   [& stages]
   `(apply jp-f (let ~cmql-core.operators.operators/operators-mappings
                  ~(into [] stages))))
 
-(defmacro cf [& filters]
+(defmacro u
+  "Converts a cMQL update(not pipeline update) to a Java MQL update"
+  [& update-operators]
+  `(apply u-f (let ~cmql-core.operators.operators/operators-mappings
+                 ~(into [] update-operators))))
+
+(defmacro cf
+  [& filters]
   {:__filter__ `(apply jp-f (let ~cmql-core.operators.operators/operators-mappings
                               ~(into [] filters)))})
 
-(defmacro ^BSON f [& filters]
+(defmacro f [& filters]
   `(.get (first (apply jp-f (let ~cmql-core.operators.operators/operators-mappings
                               ~(into [] filters))))
          "$match"))

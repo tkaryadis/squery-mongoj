@@ -1,7 +1,8 @@
 (ns cmql-j.internal.convert.arguments
   (:require cmql-core.operators.operators
             [cmql-core.internal.convert.common :refer [single-maps]]
-            [cmql-core.internal.convert.commands :refer [get-pipeline-options cmql-pipeline->mql-pipeline cmql-map->mql-map split-db-namespace]]
+            [cmql-core.internal.convert.commands :refer
+             [get-pipeline-options cmql-pipeline->mql-pipeline args->query-updateOperators-options cmql-map->mql-map split-db-namespace]]
             [cmql-j.internal.convert.options :refer [convert-options]]
             [cmql-j.driver.document :refer [clj->j-doc]])
   (:import (java.util Arrays)))
@@ -17,6 +18,11 @@
         pipeline (Arrays/asList
                    (into-array (clj->j-doc pipeline)))]
     pipeline))
+
+(defn u-f [& args]
+  (let [[query update-operators options] (args->query-updateOperators-options args #{})
+        update-operators (apply (partial merge {}) update-operators)]
+    (clj->j-doc update-operators)))
 
 
 (defn convert-arg [arg method-name]

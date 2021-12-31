@@ -18,6 +18,7 @@
            (com.mongodb WriteConcern)
            (com.mongodb.client.model CountOptions Filters InsertOneModel)))
 
+(comment
 (init-defaults {:client (connect) :decode "clj"})
 
 (def db (.getDatabase @default-client "testdb"))
@@ -99,3 +100,4 @@
 
 (c-print-all (.aggregate coll (p)))
 
+)

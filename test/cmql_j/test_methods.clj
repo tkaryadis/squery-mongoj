@@ -16,6 +16,7 @@
   (:import (com.mongodb.client MongoClients MongoClient MongoDatabase MongoCollection)
            (com.mongodb.client.model CountOptions)))
 
+(comment
 (def client (MongoClients/create))
 (def db ^MongoDatabase (.getDatabase ^MongoClient client "joy"))
 ;(def coll ^MongoCollection (.withCodecRegistry (.getCollection ^MongoDatabase db "users") clj-registry))
@@ -55,3 +56,5 @@
        (f (>- :userid 224283837859889152))
        (o (CountOptions.)
           {:limit 10})))
+
+)
