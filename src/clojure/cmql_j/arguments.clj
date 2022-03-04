@@ -25,24 +25,31 @@
   "Converts a cMQL update(not pipeline update) to a Java MQL update"
   [& update-operators]
   `(apply u-f (let ~cmql-core.operators.operators/operators-mappings
-                 ~(into [] update-operators))))
-
-(defmacro cf
-  [& filters]
-  {:__filter__ `(apply jp-f (let ~cmql-core.operators.operators/operators-mappings
-                              ~(into [] filters)))})
+                ~(into [] update-operators))))
 
 (defmacro f [& filters]
   `(.get (first (apply jp-f (let ~cmql-core.operators.operators/operators-mappings
                               ~(into [] filters))))
          "$match"))
 
-(defmacro co [& options]
-  {:__options__ `(apply (partial clojure.core/merge {}) ~(into [] options))})
+(defmacro mu [& update-operators]
+  {"$__us__" (into [] update-operators)})
+
+(defmacro mf [& query-operators]
+  {"$__qs__" query-operators})
 
 (defmacro o [options-obj & options]
   `(convert-options (apply (partial clojure.core/merge {}) ~(into [] options))
                     ~options-obj))
+
+(defmacro cf
+  [& filters]
+  {:__filter__ `(apply jp-f (let ~cmql-core.operators.operators/operators-mappings
+                              ~(into [] filters)))})
+
+(defmacro co [& options]
+  {:__options__ `(apply (partial clojure.core/merge {}) ~(into [] options))})
+
 
 (defn ^Document d
   "Clojure map to Document.No convertion.Its O(1),clj-map is stored as member of the Document."

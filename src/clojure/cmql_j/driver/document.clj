@@ -1,7 +1,8 @@
 (ns cmql-j.driver.document
   (:require ;[cheshire.core :refer [generate-string parse-string]]
             [cmql-core.utils :refer [ordered-map]]
-            [clojure.data.json :refer [write-str read-str]])
+            [clojure.data.json :refer [write-str read-str]]
+            [cmql-j.driver.utils :refer [ISODate]] )
   (:import [com.mongodb BasicDBList]
            [clojure.lang IPersistentMap Named Keyword Ratio]
            [java.util List Map Date Set]
@@ -177,3 +178,73 @@
   "JSON string to Clojure-map"
   [m & args]
   (apply read-str (cons m args)))
+
+
+;;------------------------------------------json-extended---------------------------------------------------------------
+
+(declare  clj-ext->clj)
+
+(defn read-vector [v]
+  (loop [v v
+         v1 []]
+    (if (empty? v)
+      v1
+      (let [mb (first v)]
+        (cond
+          (map? mb)
+          (let [mb (clj-ext->clj mb )]
+            (recur (rest v) (conj v1 mb)))
+
+          (vector? mb)
+          (let [mb (read-vector mb )]
+            (recur (rest v) (conj v1 mb)))
+
+          :else
+          (recur (rest v) (conj v1 mb)))))))
+
+(defn add-type [m]
+  (cond
+    (contains? m "$oid")
+    (ObjectId. ^String (get m "$oid"))
+
+    (contains? m "$date")
+    (ISODate ^String (get m "$date"))
+
+    ;;TODO ADD ALL
+
+    :else
+    m
+    ))
+
+(defn read-map [m]
+  (loop [ks (keys m)
+         m1 (ordered-map)]
+    (if (empty? ks)
+      m1
+      (let [k (first ks)
+            vl (get m k)
+            k (if (keyword? k) (name k) k)]
+        (cond
+          (map? vl)
+          (let [vl (clj-ext->clj vl)]
+            (recur (rest ks) (assoc m1 k vl)))
+
+          (vector? vl)
+          (let [vl (read-vector vl)]
+            (recur (rest ks) (assoc m1 k vl)))
+
+          :else
+          (recur (rest ks) (assoc m1 k vl)))))))
+
+(defn clj-ext->clj
+  "Converts extented-json types, to binary data, argument is a vector or a map"
+  [m]
+  (if (vector? m)
+    (read-vector m)
+    (if (and (= (count m) 1) (clojure.string/starts-with? (name (first (keys m))) "$"))
+      (let [m (add-type m)]
+        (if-not (map? m)
+          m
+          (read-map m)))
+      (read-map m))))
+
