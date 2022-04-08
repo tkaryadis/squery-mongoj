@@ -6,8 +6,8 @@
 
   :dependencies [
                  ;;clj
-                 [org.clojure/clojure "1.10.0"]
                  [org.cmql/cmql-core "0.2.0-SNAPSHOT"]
+                 [org.clojure/clojure "1.10.0"]
                  [org.slf4j/slf4j-api "1.7.30"]
                  [org.mongodb/mongodb-driver-sync "4.2.3" :exclusions [org.mongodb/bson]]
                  [org.clojure/data.json "2.4.0"]  
@@ -20,6 +20,6 @@
   :java-source-paths ["src/java"]
 
   :repl-options {:init-ns cmql-j.cmql-repl}
-  ;:main cmql-j.core
+  :main cmql-j.core
   :aot [cmql-j.cmql-repl]
   )
