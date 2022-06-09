@@ -1,4 +1,5 @@
 (ns cmql-j.driver.utils
+  (:use clojure.pprint)
   (:import (java.time Instant)
            (java.sql Date)))
 
@@ -10,3 +11,16 @@
   
 (defn days-to-ms [ndays]
   (* ndays 24 60 60000))
+
+(defn explain-index [cursor]
+  (pprint (let [explain-doc (.explain cursor)]
+            explain-doc
+            #_(if (get explain-doc :stages)
+              {:executionTimeMillis (get-in explain-doc [:stages 0 :$cursor :executionStats ])
+               :totalKeysExamined (get-in explain-doc [:stages 0 :$cursor :executionStats ])
+               :totalDocsExamined (get-in explain-doc [:stages 0 :$cursor :executionStats ])
+               :nReturned (get-in explain-doc [:stages 0 :$cursor :executionStats ])}
+              {:executionTimeMillis (get-in explain-doc [:executionStats ])
+               :totalKeysExamined (get-in explain-doc [:executionStats ])
+               :totalDocsExamined (get-in explain-doc [:executionStats ])
+               :nReturned (get-in explain-doc [:executionStats ])}))))
