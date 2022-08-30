@@ -1,11 +1,11 @@
-(ns cmql-j.driver.settings
+(ns squery-mongo.driver.settings
   (:import (com.mongodb MongoClientSettings)
            (org.bson.codecs.configuration CodecRegistries CodecProvider CodecRegistry)
            (java.util ArrayList)
            (org.bson.codecs.pojo PojoCodecProvider)
            (com.mongodb.client MongoClient MongoDatabase)))
 
-;;defaults,i can add anything i want,but cMQL-j will look those if i dont give a argument it needs
+;;defaults,i can add anything i want,but squery-mongo will look those if i dont give a argument it needs
 #_{:client client                              ;;default
    :session session                            ;;default
    :db db                                      ;;default

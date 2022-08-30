@@ -2,7 +2,7 @@
 <module type="JAVA_MODULE" version="4">
   <component name="BuildSystem">
     <option name="buildSystemId" value="LEININGEN" />
-    <option name="displayName" value="org.cmql/cmql-j:0.2.0-SNAPSHOT" />
+    <option name="displayName" value="org.squery/squery-mongo-j:0.2.0-SNAPSHOT" />
   </component>
   <component name="NewModuleRootManager">
     <output url="file://$MODULE_DIR$/target/classes" />
@@ -55,11 +55,11 @@
     <orderEntry type="library" name="Leiningen: org.ow2.asm/asm:5.2" level="project" />
     <orderEntry type="library" name="Leiningen: org.slf4j/slf4j-api:1.7.30" level="project" />
     <orderEntry type="library" name="Leiningen: org.snakeyaml/snakeyaml-engine:2.1" level="project" />
+    <orderEntry type="library" name="Leiningen: org.squery/squery-mongo-core:0.2.0-SNAPSHOT" level="project" />
     <orderEntry type="library" name="Leiningen: org.tukaani/xz:1.5" level="project" />
     <orderEntry type="library" name="Leiningen: primitive-math:0.1.6" level="project" />
     <orderEntry type="library" name="Leiningen: prismatic/schema:1.1.12" level="project" />
     <orderEntry type="library" name="Leiningen: tigris:0.1.2" level="project" />
     <orderEntry type="library" name="Leiningen: tupelo:20.08.27" level="project" />
-    <orderEntry type="module" module-name="cmql-core" />
   </component>
 </module>

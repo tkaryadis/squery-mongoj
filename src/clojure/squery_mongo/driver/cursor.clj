@@ -1,6 +1,6 @@
-(ns cmql-j.driver.cursor
+(ns squery-mongo.driver.cursor
   (:require clojure.pprint
-            [cmql-j.driver.document :refer [json->clj]])
+            [squery-mongo.driver.document :refer [json->clj]])
   (:import (java.util ArrayList)
            (org.bson Document)))
 

@@ -1,4 +1,4 @@
-(ns cmql-j.driver.transactions
+(ns squery-mongo.driver.transactions
   (:import (com.mongodb.client TransactionBody ClientSession)))
 
 ;;;TransactionOptions txnOptions = TransactionOptions.builder()

@@ -1,15 +1,15 @@
-(ns cmql-j.bulk
+(ns squery-mongo.bulk
   (:refer-clojure :only [])
-  (:use cmql-j.api.macros
-        cmql-j.api.arguments
-        cmql-j.api.mongo-collection
-        cmql-j.api.driver-core
-        cmql-j.client
-        cmql-j.cursor
-        cmql-j.document
-        cmql-j.settings
-        cmql.operators.operators
-        cmql.operators.stages
+  (:use squery-mongo.api.macros
+        squery-mongo.api.arguments
+        squery-mongo.api.mongo-collection
+        squery-mongo.api.driver-core
+        squery-mongo.client
+        squery-mongo.cursor
+        squery-mongo.document
+        squery-mongo.settings
+        squery-mongo-core.operators.operators
+        squery-mongo-core.operators.stages
         clojure.pprint)
   (:refer-clojure)
   (:require cmql.operators.stages

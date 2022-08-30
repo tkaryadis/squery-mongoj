@@ -1,34 +1,34 @@
-(ns cmql-j.arguments
-  (:require cmql-core.operators.operators
-            [cmql-core.internal.convert.stages :refer [cmql-vector->cmql-map]]
-            [cmql-j.internal.convert.arguments :refer [jp-f u-f]]
-            [cmql-j.internal.convert.options :refer [convert-options]]
-            [cmql-j.driver.document :refer [clj->j-doc]])
+(ns squery-mongo.arguments
+  (:require squery-mongo-core.operators.operators
+            [squery-mongo-core.internal.convert.stages :refer [squery-vector->squery-map]]
+            [squery-mongo.internal.convert.arguments :refer [jp-f u-f]]
+            [squery-mongo.internal.convert.options :refer [convert-options]]
+            [squery-mongo.driver.document :refer [clj->j-doc]])
   (:import (org.bson Document BSON)
            (java.util Map ArrayList)))
 
 
-;;For use with Java raw Interop,keep the driver java method,but write the arguments in cMQL
+;;For use with Java raw Interop,keep the driver java method,but write the arguments in squery
 (defmacro cp
-  "Convert a cMQL pipeline to a Java MQL pipeline"
+  "Convert a squery pipeline to a Java MQL pipeline"
   [& stages]
-  {:__pipeline__ `(apply jp-f (let ~cmql-core.operators.operators/operators-mappings
+  {:__pipeline__ `(apply jp-f (let ~squery-mongo-core.operators.operators/operators-mappings
                                 ~(into [] stages)))})
 
 (defmacro  p
-  "Convert a cMQL pipeline to a Java MQL pipeline(Arraylist)"
+  "Convert a squery pipeline to a Java MQL pipeline(Arraylist)"
   [& stages]
-  `(apply jp-f (let ~cmql-core.operators.operators/operators-mappings
+  `(apply jp-f (let ~squery-mongo-core.operators.operators/operators-mappings
                  ~(into [] stages))))
 
 (defmacro u
-  "Converts a cMQL update(not pipeline update) to a Java MQL update"
+  "Converts a squery update(not pipeline update) to a Java MQL update"
   [& update-operators]
-  `(apply u-f (let ~cmql-core.operators.operators/operators-mappings
+  `(apply u-f (let ~squery-mongo-core.operators.operators/operators-mappings
                 ~(into [] update-operators))))
 
 (defmacro f [& filters]
-  `(.get (first (apply jp-f (let ~cmql-core.operators.operators/operators-mappings
+  `(.get (first (apply jp-f (let ~squery-mongo-core.operators.operators/operators-mappings
                               ~(into [] filters))))
          "$match"))
 
@@ -44,7 +44,7 @@
 
 (defmacro cf
   [& filters]
-  {:__filter__ `(apply jp-f (let ~cmql-core.operators.operators/operators-mappings
+  {:__filter__ `(apply jp-f (let ~squery-mongo-core.operators.operators/operators-mappings
                               ~(into [] filters)))})
 
 (defmacro co [& options]
@@ -63,7 +63,7 @@
   (cond
 
     (vector? projection-vector-map)
-    (.projection obj (clj->j-doc (cmql-vector->cmql-map projection-vector-map 0)))
+    (.projection obj (clj->j-doc (squery-vector->squery-map projection-vector-map 0)))
 
     (map? projection-vector-map)
     (.projection obj (clj->j-doc projection-vector-map))
@@ -75,7 +75,7 @@
   (cond
 
     (vector? sort-vector-map)
-    (.sort obj (clj->j-doc (cmql-vector->cmql-map sort-vector-map -1)))
+    (.sort obj (clj->j-doc (squery-vector->squery-map sort-vector-map -1)))
 
     (map? sort-vector-map)
     (.sort obj (clj->j-doc sort-vector-map))

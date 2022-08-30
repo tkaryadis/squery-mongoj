@@ -1,6 +1,6 @@
-(ns cmql-j.internal.convert.commands
-  (:require [cmql-core.internal.convert.commands :refer [split-db-namespace]]
-            [cmql-j.driver.settings :refer [defaults j-registry clj-registry pojo-registry]])
+(ns squery-mongo.internal.convert.commands
+  (:require [squery-mongo-core.internal.convert.commands :refer [split-db-namespace]]
+            [squery-mongo.driver.settings :refer [defaults j-registry clj-registry pojo-registry]])
   (:import (com.mongodb.client MongoClient MongoDatabase MongoCollection)
            (org.bson Document)
            (com.mongodb MongoClientSettings)))

@@ -1,4 +1,4 @@
-(ns cmql-j.driver.utils
+(ns squery-mongo.driver.utils
   (:use clojure.pprint)
   (:import (java.time Instant)
            (java.sql Date)))

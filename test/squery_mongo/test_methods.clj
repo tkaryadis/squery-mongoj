@@ -1,14 +1,14 @@
-(ns cmql-j.test-methods
+(ns squery-mongo.test-methods
   (:refer-clojure :only [])
-  (:use cmql-j.macros
-        cmql-j.interop.arguments
-        cmql-j.interop.mongo-collection
-        cmql-j.client
-        cmql-j.cursor
-        cmql-j.document
-        cmql-j.settings
-        cmql.operators.operators
-        cmql.operators.stages
+  (:use squery-mongo.macros
+        squery-mongo.interop.arguments
+        squery-mongo.interop.mongo-collection
+        squery-mongo.client
+        squery-mongo.cursor
+        squery-mongo.document
+        squery-mongo.settings
+        squery-mongo-core.operators.operators
+        squery-mongo-core.operators.stages
         clojure.pprint)
   (:refer-clojure)
   (:require cmql.operators.stages

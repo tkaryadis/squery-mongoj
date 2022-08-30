@@ -1,6 +1,6 @@
-(ns cmql-j.driver.print
-  (:require [cmql-core.utils :refer [string-map ordered-map]]
-            [cmql-j.driver.document :refer [clj->json]]))
+(ns squery-mongo.driver.print
+  (:require [squery-mongo-core.utils :refer [string-map ordered-map]]
+            [squery-mongo.driver.document :refer [clj->json]]))
 
 (defn print-command? [args]
   (reduce (fn [[args print?] arg]

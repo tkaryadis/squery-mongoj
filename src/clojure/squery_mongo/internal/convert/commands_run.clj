@@ -1,10 +1,10 @@
-(ns cmql-j.internal.convert.commands-run
-  (:require [cmql-core.utils :refer [ordered-map]]
-            [cmql-j.internal.convert.commands :refer [get-command-info]]
-            [cmql-j.internal.convert.options :refer [add-options]]
-            [cmql-j.driver.settings :refer [defaults pojo-registry clj-registry j-registry]]
-            [cmql-j.driver.document :refer [clj-doc clj->j-doc]]
-            [cmql-j.driver.print :refer [print-command]])
+(ns squery-mongo.internal.convert.commands-run
+  (:require [squery-mongo-core.utils :refer [ordered-map]]
+            [squery-mongo.internal.convert.commands :refer [get-command-info]]
+            [squery-mongo.internal.convert.options :refer [add-options]]
+            [squery-mongo.driver.settings :refer [defaults pojo-registry clj-registry j-registry]]
+            [squery-mongo.driver.document :refer [clj-doc clj->j-doc]]
+            [squery-mongo.driver.print :refer [print-command]])
   (:import (com.mongodb MongoCommandException MongoClientSettings)
            (com.mongodb.client MongoCollection ClientSession MongoDatabase MongoClient)
            (java.util ArrayList Collection Map List Arrays)

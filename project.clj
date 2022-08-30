@@ -1,4 +1,4 @@
-(defproject org.cmql/cmql-j "0.2.0-SNAPSHOT"
+(defproject org.squery/squery-mongo-j "0.2.0-SNAPSHOT"
   :description "Query MongoDB with up to 3x less code (clj/java-driver)"
   :url "https://github.com/tkaryadis/cmql-j"
   :license {:name "Eclipse Public License"
@@ -6,7 +6,7 @@
 
   :dependencies [
                  ;;clj
-                 [org.cmql/cmql-core "0.2.0-SNAPSHOT"]
+                 [org.squery/squery-mongo-core "0.2.0-SNAPSHOT"]
                  [org.clojure/clojure "1.10.0"]
                  [org.slf4j/slf4j-api "1.7.30"]
                  [org.mongodb/mongodb-driver-sync "4.2.3" :exclusions [org.mongodb/bson]]
@@ -19,7 +19,7 @@
   :source-paths ["src/clojure"]
   :java-source-paths ["src/java"]
 
-  :repl-options {:init-ns cmql-j.cmql-repl}
-  :main cmql-j.core
-  :aot [cmql-j.cmql-repl]
+  ;;:repl-options {:init-ns cmql-j.cmql-repl}
+  ;;:main cmql-j.core
+  ;;:aot [cmql-j.cmql-repl]
   )

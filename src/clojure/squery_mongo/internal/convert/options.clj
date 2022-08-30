@@ -1,6 +1,6 @@
-(ns cmql-j.internal.convert.options
-  (:require [cmql-core.utils :refer [string-map]]
-            [cmql-j.driver.document :refer [clj-doc clj->j-doc]])
+(ns squery-mongo.internal.convert.options
+  (:require [squery-mongo-core.utils :refer [string-map]]
+            [squery-mongo.driver.document :refer [clj-doc clj->j-doc]])
   (:import (java.util.concurrent TimeUnit)
            (com.mongodb.client.model EstimatedDocumentCountOptions
                                      DropIndexOptions

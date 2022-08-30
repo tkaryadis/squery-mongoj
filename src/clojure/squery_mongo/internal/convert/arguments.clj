@@ -1,19 +1,19 @@
-(ns cmql-j.internal.convert.arguments
-  (:require cmql-core.operators.operators
-            [cmql-core.internal.convert.common :refer [single-maps]]
-            [cmql-core.internal.convert.commands :refer
-             [get-pipeline-options cmql-pipeline->mql-pipeline args->query-updateOperators-options cmql-map->mql-map split-db-namespace]]
-            [cmql-j.internal.convert.options :refer [convert-options]]
-            [cmql-j.driver.document :refer [clj->j-doc]])
+(ns squery-mongo.internal.convert.arguments
+  (:require squery-mongo-core.operators.operators
+            [squery-mongo-core.internal.convert.common :refer [single-maps]]
+            [squery-mongo-core.internal.convert.commands :refer
+             [get-pipeline-options squery-pipeline->mql-pipeline args->query-updateOperators-options squery-map->mql-map split-db-namespace]]
+            [squery-mongo.internal.convert.options :refer [convert-options]]
+            [squery-mongo.driver.document :refer [clj->j-doc]])
   (:import (java.util Arrays)))
 
 
 (defn jp-f [& args]
   (let [args (single-maps args #{})
         [pipeline args] (get-pipeline-options args #{})
-        pipeline (cmql-pipeline->mql-pipeline pipeline)
+        pipeline (squery-pipeline->mql-pipeline pipeline)
         pipeline-map {:pipeline pipeline}
-        pipeline-map (cmql-map->mql-map pipeline-map)
+        pipeline-map (squery-map->mql-map pipeline-map)
         pipeline (get pipeline-map "pipeline")
         pipeline (Arrays/asList
                    (into-array (clj->j-doc pipeline)))]
