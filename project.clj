@@ -12,7 +12,8 @@
                  [org.mongodb/mongodb-driver-sync "4.2.3" :exclusions [org.mongodb/bson]]
                  [org.clojure/data.json "2.4.0"]  
                  [cheshire "5.10.0"]              ;;json alternative
-                 [org.flatland/ordered "1.5.9"]]
+                 [org.flatland/ordered "1.5.9"]
+                 ]
   
   :plugins [[lein-codox "0.10.7"]]
 
