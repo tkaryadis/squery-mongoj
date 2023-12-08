@@ -16,6 +16,7 @@
    :result-class result-class                 ;;for pojo
    }
 (def defaults-map (atom {:client-settings (-> (MongoClientSettings/builder) (.build))
+                         :clj? true
                          :session nil}))
 
 (defn defaults [k]
@@ -28,7 +29,7 @@
         (recur (do (swap! defaults-map assoc (first kv) (second kv)) (rest kvs)))))))
 
 ;;clojure registry
-(def clj-registry
+#_(def clj-registry
   (let [codec-registry (CodecRegistries/fromRegistries
                          (into-array [(MongoClientSettings/getDefaultCodecRegistry)]))
         _ (.setjavaRegistry ^CodecRegistries codec-registry false)]

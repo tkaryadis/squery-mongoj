@@ -15,14 +15,6 @@
           args))
 
 (defn print-command [command-head command-body]
-  (let [print-option (get command-body "print")
+  (let [_ (prn "xxx" command-body)
         command (merge (ordered-map command-head) (dissoc command-body "print"))]
-    (cond
-      (= print-option "clj")
-      (clojure.pprint/pprint command)
-
-      (= print-option "js")
-      (println (clj->json command))
-
-      :else
-      (clojure.pprint/pprint command))))
+    (clojure.pprint/pprint command)))

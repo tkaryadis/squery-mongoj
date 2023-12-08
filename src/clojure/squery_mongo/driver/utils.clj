@@ -24,3 +24,30 @@
                :totalKeysExamined (get-in explain-doc [:executionStats ])
                :totalDocsExamined (get-in explain-doc [:executionStats ])
                :nReturned (get-in explain-doc [:executionStats ])}))))
+               
+(defn string-map
+  "Makes keyword keys to strings"
+  [m]
+  (if (map? m)
+    (reduce (fn [m-k k]
+              (assoc m-k (if (keyword? k)
+                           (name k)
+                           k)
+                         (get m k)))
+            {}
+            (keys m))
+    m))
+
+(defn keyword-map
+  "Makes string keys to keywords"
+  [m]
+  (if (map? m)
+    (reduce (fn [m-k k]
+              (assoc m-k (if (string? k)
+                           (keyword k)
+                           k)
+                         (get m k)))
+            {}
+            (keys m))
+    m))
+

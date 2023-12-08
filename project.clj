@@ -9,7 +9,8 @@
                  [org.squery/squery-mongo-core "0.2.0-SNAPSHOT"]
                  [org.clojure/clojure "1.10.0"]
                  [org.slf4j/slf4j-api "1.7.30"]
-                 [org.mongodb/mongodb-driver-sync "4.2.3" :exclusions [org.mongodb/bson]]
+                 [org.mongodb/mongodb-driver-sync "4.11.0"]
+                 ;[org.mongodb/mongodb-driver-sync "4.7.2" :exclusions [org.mongodb/bson]]
                  [org.clojure/data.json "2.4.0"]  
                  [cheshire "5.10.0"]              ;;json alternative
                  [org.flatland/ordered "1.5.9"]

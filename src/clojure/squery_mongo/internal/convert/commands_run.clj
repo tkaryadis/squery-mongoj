@@ -2,8 +2,8 @@
   (:require [squery-mongo-core.utils :refer [ordered-map]]
             [squery-mongo.internal.convert.commands :refer [get-command-info]]
             [squery-mongo.internal.convert.options :refer [add-options]]
-            [squery-mongo.driver.settings :refer [defaults pojo-registry clj-registry j-registry]]
-            [squery-mongo.driver.document :refer [clj-doc clj->j-doc]]
+            [squery-mongo.driver.settings :refer [defaults pojo-registry ]]
+            [squery-mongo.driver.document :refer [clj-doc j-doc clj->j-doc j-doc->clj]]
             [squery-mongo.driver.print :refer [print-command]])
   (:import (com.mongodb MongoCommandException MongoClientSettings)
            (com.mongodb.client MongoCollection ClientSession MongoDatabase MongoClient)
@@ -16,6 +16,8 @@
 
 ;;TODO kapies commands xriazonte ta registry/result-class
 ;;kapies akoma kai ean i coll exi registy/result-class, prepei na tis agnoiso
+
+;;TODO print has a problem but i dont need it,  {:command true} and pprint after works
 
 (def pojo-return-commands #{"find" "aggregate"})
 
@@ -39,16 +41,16 @@
                          Document)
           ;db-namespace (coll-or-coll-info-to-db-namespace coll)
           command-body (get command :command-body)
-          command-body (if (contains? command-body "print")
-                         (do (print-command (get command :command-head) command-body)
-                             (dissoc command-body "print"))
-                         command-body)
           command-body (dissoc command-body "client" "session")
           mql-map (merge (ordered-map (get command :command-head)) command-body)
-          mql-doc (clj-doc mql-map)]
-      (if (some? session)
-        (.runCommand db ^ClientSession session ^Document mql-doc ^Class result-class) ;;(c-schema (.runCommand db ^ClientSession session ^Document mql-doc))
-        (.runCommand db ^Document mql-doc ^Class result-class)))))
+          ;mql-doc (clj-doc mql-map)   ;;TODO WHEN CODEC
+          mql-doc (clj->j-doc mql-map)
+          result (if (some? session)
+                   (.runCommand db ^ClientSession session ^Document mql-doc ^Class result-class) ;;(c-schema (.runCommand db ^ClientSession session ^Document mql-doc))
+                   (.runCommand db ^Document mql-doc ^Class result-class))]
+      (if (defaults :clj?)
+        (j-doc->clj result)
+        result))))
 
 
 ;;---------------------------------------Methods------------------------------------------------------------------------
@@ -96,22 +98,31 @@
 ;;i will put registry in coll only,and result-class as option  {:decode ...}
 (defn run-aggregation [command-info command]
   (if (get-in command [:command-body "command"])
+    ;;pprint removes the order-map etc
     (let [command-head (ordered-map (get command :command-head))
           command-body (dissoc (get command :command-body) "command")]
       (merge command-head command-body))
     (let [coll (get command-info :coll)
+          db (get command-info :db)
           session (get command-info :session)
           result-class (get command-info :result-class)
           command-body (get command :command-body)
-          command-body (if (contains? command-body "print")
-                         (do (print-command (get command :command-head) command-body)
-                             (dissoc command-body "print"))
-                         command-body)
           pipeline (get command-body "pipeline")
-          pipeline (ArrayList. ^Collection (map clj-doc pipeline))
-          aggregateIterableImpl (if (some? session)
+          ;pipeline (ArrayList. ^Collection (map clj-doc pipeline))   ;;TODO WHEN CODEC
+          pipeline (ArrayList. ^Collection (map clj->j-doc pipeline))
+          aggregateIterableImpl (cond
+
+                                  (and (some? coll) (some? session))
                                   (.aggregate ^MongoCollection coll ^ClientSession session pipeline ^Class result-class)
-                                  (.aggregate ^MongoCollection coll pipeline ^Class result-class))
+
+                                  (some? coll)
+                                  (.aggregate ^MongoCollection coll pipeline ^Class result-class)
+
+                                  (some? session)
+                                  (.aggregate ^MongoDatabase db ^ClientSession session pipeline ^Class result-class)
+
+                                  :else
+                                  (.aggregate ^MongoDatabase db pipeline ^Class result-class))
           options (dissoc command-body "pipeline")
           _ (add-options aggregateIterableImpl options)
           ]

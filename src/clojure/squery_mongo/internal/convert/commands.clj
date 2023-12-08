@@ -1,6 +1,6 @@
 (ns squery-mongo.internal.convert.commands
   (:require [squery-mongo-core.internal.convert.commands :refer [split-db-namespace]]
-            [squery-mongo.driver.settings :refer [defaults j-registry clj-registry pojo-registry]])
+            [squery-mongo.driver.settings :refer [defaults]])
   (:import (com.mongodb.client MongoClient MongoDatabase MongoCollection)
            (org.bson Document)
            (com.mongodb MongoClientSettings)))
@@ -53,7 +53,7 @@
              (.getDatabase client db-name)
              (defaults :db))
         db-name (.getName ^MongoDatabase db)
-        coll (if (some? coll-name) (.getCollection db coll-name result-class) nil) ;;coll is optional depends on command
+        coll (if (not= coll-name "") (.getCollection db coll-name result-class) nil) ;;coll is optional depends on command
         ]
     {:client client
      :session session
