@@ -54,9 +54,23 @@
                            }
                           ])
 
+;;altitube range in collection is  600-1700
+;;here i partition based on altitube and i will add values in each partition
+;;from 600-1700 because i use "full" (even if partition doesnt start with 600 or ends in 1700)
+;;i will add 600,800,1000,1200,1400,1600 (only if missing)
+;;  (even range was 1800, i wouldnt add the last, its exclusive)
+;;if instead of "full" i used "partition" range will be the partition range
 (c-print-all (q :testdb.testcoll
                 (densify :altitude
                          [:variety]
                          (step 200 "full"))
+                ;{:command true}
+                ))
+
+;;range here is 0,1000-200 =  0,800  (1000 is exclusive,if i used 1001 for example it would be 0,1000)
+(c-print-all (q :testdb.testcoll
+                (densify :altitude
+                         [:variety]
+                         (step 200 [0 1001]))
                 ;{:command true}
                 ))

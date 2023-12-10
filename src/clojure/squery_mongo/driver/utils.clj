@@ -7,7 +7,10 @@
 (defn ISODate 
   ([] (Date. (.getTime ^java.util.Date (java.util.Date.))))
   ([date-s]
-  (Date/from (Instant/parse date-s))))
+   (let [date-s (if (not (clojure.string/includes? date-s "T"))
+                  (str date-s "T00:00:00Z")
+                  date-s)]
+     (Date/from (Instant/parse date-s)))))
   
 (defn days-to-ms [ndays]
   (* ndays 24 60 60000))
